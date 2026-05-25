@@ -1,0 +1,27 @@
+{
+  "ami_name": "my-web-server",
+  "platform": "Windows",
+  "aws_region": "us-east-2",
+  "vpc_id": "vpc-12345678",
+  "subnet_ids": ["subnet-12345678", "subnet-87654321"],
+  "instance_types": ["c5.large"],
+  "source_ami_name": "Windows_Server-2019-English-Full-Base-*",
+  "ami_display_name": "Custom Web Server AMI",
+  "ami_description": "Windows Server 2019 with IIS, .NET, and custom applications",
+  "software_packages": [
+    "git",
+    "nodejs",
+    "python",
+    "7zip"
+  ],
+  "windows_features": [
+    "IIS-WebServer",
+    "IIS-ASPNET45",
+    "IIS-NetFxExtensibility45"
+  ],
+  "custom_scripts": "choco install dotnet-6.0-sdk -y",
+  "target_account_ids": ["123456789012"],
+  "ami_regions": ["us-east-2"],
+  "owner": "DevOps Team",
+  "environment": "production"
+}

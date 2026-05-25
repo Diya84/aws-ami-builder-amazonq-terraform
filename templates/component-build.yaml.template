@@ -1,0 +1,40 @@
+name: {{COMPONENT_NAME}}
+description: '{{COMPONENT_DESCRIPTION}}'
+schemaVersion: 1.0
+parameters:
+  - S3BucketName:
+      type: string
+      description: S3 Bucket Name where the scripts are located
+phases:
+  - name: build
+    steps:
+      - name: CreatingTempFolder
+        action: CreateFolder
+        inputs:
+          - path: {{TEMP_PATH}}
+      
+      - name: DownloadScripts
+        action: S3Download
+        timeoutSeconds: 60
+        onFailure: Abort
+        maxAttempts: 3
+        inputs:
+          {{SCRIPT_DOWNLOADS}}
+      
+      {{BUILD_STEPS}}
+      
+      - name: CleanupTempFiles
+        action: ExecutePowerShell
+        timeoutSeconds: 60
+        onFailure: Continue
+        inputs:
+          commands:
+            - Remove-Item -Path "{{TEMP_PATH}}" -Recurse -Force -ErrorAction SilentlyContinue
+
+      - name: InstallSystemUpdates
+        action: {{UPDATE_ACTION}}
+
+      - name: RebootAfterConfigApplied
+        action: Reboot
+        inputs:
+          delaySeconds: 60

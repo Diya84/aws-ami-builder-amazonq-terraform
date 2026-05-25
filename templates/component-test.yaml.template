@@ -1,0 +1,32 @@
+name: {{COMPONENT_NAME}}-test
+description: 'Test and verify {{COMPONENT_DESCRIPTION}}'
+schemaVersion: 1.0
+parameters:
+  - S3BucketName:
+      type: string
+      description: S3 Bucket Name where the test scripts are located
+phases:
+  - name: test
+    steps:
+      - name: CreatingTestFolder
+        action: CreateFolder
+        inputs:
+          - path: {{TEMP_PATH}}/tests
+      
+      - name: DownloadTestScripts
+        action: S3Download
+        timeoutSeconds: 60
+        onFailure: Abort
+        maxAttempts: 3
+        inputs:
+          {{TEST_SCRIPT_DOWNLOADS}}
+      
+      {{TEST_STEPS}}
+      
+      - name: CleanupTestFiles
+        action: ExecutePowerShell
+        timeoutSeconds: 60
+        onFailure: Continue
+        inputs:
+          commands:
+            - Remove-Item -Path "{{TEMP_PATH}}/tests" -Recurse -Force -ErrorAction SilentlyContinue
