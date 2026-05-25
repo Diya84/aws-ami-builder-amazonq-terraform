@@ -13,7 +13,7 @@ This solution provides a flexible, template-driven approach to create custom Win
 - **Multi-Environment Support**: Configurable for dev, staging, and production
 
 ## Architecture Diagram 
-![Alt text](aws-ami-builder-amazonq-terraform/AMI.png "Architecture Diagram for Solution")
+![Alt text](AMI.png "Architecture Diagram for Solution")
 
 ## Prerequisites
 
